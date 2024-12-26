@@ -11,18 +11,17 @@ namespace OrangedataRequest.DataService
 {
     internal sealed class ODDataService
     {
-        public ODDataService(string keyPath, string certPath, string certPassword, string apiUrl)
+        public ODDataService(string keyXml, byte[] cert, string certPassword, string apiUrl)
         {
-            _keyPath = keyPath;
-            _cert = new X509Certificate2(certPath, certPassword);
+            _keyXml = keyXml;
+            _cert = new X509Certificate2(cert, certPassword);
             _apiUrl = apiUrl;
         }
 
         private readonly string _apiUrl;
 
-        private readonly string _keyPath;
+        private readonly string _keyXml;
         private readonly X509Certificate2 _cert;
-        private readonly Encoding _encoding = Encoding.UTF8;
 
         #region Public methods
 
@@ -116,7 +115,7 @@ namespace OrangedataRequest.DataService
 
             using (var rsa = RSA.Create())
             {
-                rsa.ImportFromXml(File.ReadAllText(_keyPath));
+                rsa.ImportFromXml(_keyXml);
                 return Convert.ToBase64String(rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1));
             }
         }

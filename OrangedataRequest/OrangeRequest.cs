@@ -1,4 +1,5 @@
 ﻿using OrangedataRequest.DataService;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace OrangedataRequest
@@ -44,13 +45,24 @@ namespace OrangedataRequest
 
         /// <summary>
         /// </summary>
+        /// <param name="keyXml">xml-строка с содержимым ключа для подписи клиентских сообщений</param>
+        /// <param name="cert">Байтовый массив, содержащий данные клиентского X509-сертификата</param>
+        /// <param name="certPassword">Пароль клиентского сертификата</param>
+        /// <param name="apiUrl">URL-адрес к продуктовому или тестовому API</param>
+        public OrangeRequest(string keyXml, byte[] cert, string certPassword, string apiUrl = ApiUrl)
+        {
+            _dataService = new ODDataService(keyXml, cert, certPassword, apiUrl);
+        }
+
+        /// <summary>
+        /// </summary>
         /// <param name="keyPath">Путь к xml-файлу ключа для подписи клиентских сообщений</param>
         /// <param name="certPath">Путь к клиентскому сертификату</param>
         /// <param name="certPassword">Пароль клиентского сертификата</param>
         /// <param name="apiUrl">URL-адрес к продуктовому или тестовому API</param>
         public OrangeRequest(string keyPath, string certPath, string certPassword, string apiUrl = ApiUrl)
+            : this(File.ReadAllText(keyPath), File.ReadAllBytes(certPath), certPassword, apiUrl)
         {
-            _dataService = new ODDataService(keyPath, certPath, certPassword, apiUrl);
         }
 
         /// <summary>
