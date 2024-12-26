@@ -128,57 +128,58 @@ namespace OrangedataRequest.Models
 
         /// <summary>
         /// Сумма расчета, указанного в чеке (БСО), 1020.
+        /// Сумма расчета с учетом скидок, наценок и НДС, указанная в кассовом чеке (БСО)
         /// </summary>
-        public decimal TotalSum { get; set; }
+        public decimal? TotalSum { get; set; }
 
         /// <summary>
         /// Сумма НДС чека по ставке 20%, 1102
         /// </summary>
-        public decimal Vat1Sum { get; set; }
+        public decimal? Vat1Sum { get; set; }
         
         /// <summary>
         /// Сумма НДС чека по ставке 10%, 1103
         /// </summary>
-        public decimal Vat2Sum { get; set; }
+        public decimal? Vat2Sum { get; set; }
         
         /// <summary>
         /// Сумма расчета по чеку с НДС по ставке 0%, 1104
         /// </summary>
-        public decimal Vat3Sum { get; set; }
+        public decimal? Vat3Sum { get; set; }
         
         /// <summary>
         /// Сумма расчета по чеку без НДС, 1105
         /// </summary>
-        public decimal Vat4Sum { get; set; }
+        public decimal? Vat4Sum { get; set; }
         
         /// <summary>
         /// Сумма НДС чека по расч. ставке 20/120, 1106
         /// </summary>
-        public decimal Vat5Sum { get; set; }
+        public decimal? Vat5Sum { get; set; }
         
         /// <summary>
         /// Сумма НДС чека по расч. ставке 10/110, 1107
         /// </summary>
-        public decimal Vat6Sum { get; set; }
+        public decimal? Vat6Sum { get; set; }
 
         /// <summary>
         /// Сумма НДС чека по ставке 5%
         /// </summary>
-        public decimal Vat7Sum { get; set; }
+        public decimal? Vat7Sum { get; set; }
 
         /// <summary>
         /// Сумма НДС чека по ставке 7%
         /// </summary>
-        public decimal Vat8Sum { get; set; }
+        public decimal? Vat8Sum { get; set; }
 
         /// <summary>
         /// Сумма НДС чека по ставке расч. 5/105
         /// </summary>
-        public decimal Vat9Sum { get; set; }
+        public decimal? Vat9Sum { get; set; }
 
         /// <summary>
         /// Сумма НДС чека по ставке расч. 7/107
         /// </summary>
-        public decimal Vat10Sum { get; set; }
+        public decimal? Vat10Sum { get; set; }
     }
 }

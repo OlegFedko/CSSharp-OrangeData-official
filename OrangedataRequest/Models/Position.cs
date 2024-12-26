@@ -95,6 +95,6 @@ namespace OrangedataRequest.Models
         /// <summary>
         /// Сумма НДС за предмет расчета, 1200
         /// </summary>
-        public decimal TaxSum { get; set; }
+        public decimal? TaxSum { get; set; }
     }
 }
