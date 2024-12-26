@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OrangedataRequest
 {
-    public sealed class OrangeRequest
+    public sealed class OrangeRequest : IOrangeRequest
     {
         /// <summary>
         /// This test environment provides API functionality without a web cabinet. Device emulators are used instead of physical devices.
