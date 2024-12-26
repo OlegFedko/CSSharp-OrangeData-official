@@ -69,6 +69,10 @@ namespace OrangedataRequest.DataService
         /// <summary>
         ///     Время регистрации фискального документа в ФН
         /// </summary>
+        /// <remarks>
+        ///     Время в виде строки в формате ISO8601 "2017-02-14T14:16:00"
+        ///     Тайм зона МСК (требует проверки)
+        /// </remarks>
         public string ProcessedAt { get; set; }
 
         /// <summary>

@@ -112,7 +112,15 @@ namespace TestLauncher
             try
             {
                 var res1 = await dummyOrangeRequest.CreateCheckAsync(dummyCreateCheckRequest);
-                if (res1.StatusCode != HttpStatusCode.Created)
+                if (res1.StatusCode == HttpStatusCode.Created)
+                {
+                    Console.WriteLine("Registered...");
+                }
+                else if (res1.StatusCode == HttpStatusCode.Conflict)
+                {
+                    Console.WriteLine("Already registered...");
+                }
+                else
                 {
                     if (res1.ResponseObject is Exception exception)
                         throw new ApplicationException("CreateCheckAsync failed", exception);

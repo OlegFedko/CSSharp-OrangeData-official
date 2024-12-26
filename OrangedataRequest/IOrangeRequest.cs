@@ -9,7 +9,10 @@ namespace OrangedataRequest
         ///     Отправка запроса создания чека
         /// </summary>
         /// <param name="check">Чек</param>
-        /// <returns></returns>
+        /// <returns>
+        /// ODResponse.StatusCode == HttpStatusCode.Created - запрос принят
+        /// ODResponse.StatusCode == HttpStatusCode.Conflict - запрос на чек с таким ID уже был принят
+        /// </returns>
         Task<ODResponse> CreateCheckAsync(ReqCreateCheck check);
 
         /// <summary>
@@ -17,7 +20,10 @@ namespace OrangedataRequest
         /// </summary>
         /// <param name="INN">ИНН организации, для которой пробивается чек</param>
         /// <param name="documentId">Идентификатор документа, который был указан при его создании</param>
-        /// <returns></returns>
+        /// <returns>
+        /// ODResponse.StatusCode == HttpStatusCode.Accepted - чек создан и добавлен в очередь на обработку, но еще не обработан, пустое тело ответа
+        /// ODResponse.StatusCode == HttpStatusCode.OK - чек обработан
+        /// </returns>
         Task<ODResponse> GetCheckStateAsync(string INN, string documentId);
 
         /// <summary>
