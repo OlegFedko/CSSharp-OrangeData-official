@@ -99,7 +99,7 @@ namespace OrangedataRequest.DataService
                 res.Response = text;
                 try
                 {
-                    res.ResponseObject = SerializationHelper.Deserealize<T>(text);
+                    res.ResponseObject = SerializationHelper.Deserialize<T>(text);
                 }
                 catch(Exception ex)
                 {

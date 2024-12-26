@@ -25,7 +25,7 @@ namespace OrangedataRequest.Helpers
             return resStr;
         }
 
-        public static T Deserealize<T>(string json)
+        public static T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
