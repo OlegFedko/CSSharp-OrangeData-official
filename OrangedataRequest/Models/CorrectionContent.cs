@@ -92,6 +92,26 @@ namespace OrangedataRequest.Models
         public decimal Tax6Sum { get; set; }
 
         /// <summary>
+        ///     Сумма НДС чека по ставке 5%
+        /// </summary>
+        public decimal Tax7Sum { get; set; }
+
+        /// <summary>
+        ///     Сумма НДС чека по ставке 7%
+        /// </summary>
+        public decimal Tax8Sum { get; set; }
+
+        /// <summary>
+        ///     Сумма НДС чека по ставке расч. 5/105
+        /// </summary>
+        public decimal Tax9Sum { get; set; }
+
+        /// <summary>
+        ///     Сумма НДС чека по ставке расч. 7/107
+        /// </summary>
+        public decimal Tax10Sum { get; set; }
+
+        /// <summary>
         ///     Применяемая система налогообложения
         /// </summary>
         public TaxationSystemEnum TaxationSystem { get; set; }

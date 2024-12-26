@@ -11,14 +11,14 @@ namespace OrangedataRequest.DataService
 {
     internal sealed class ODDataService
     {
-        public ODDataService(string keyPath, string certPath, string certPassword, string apiUrl = "https://46.28.89.45:2443/api/v2")
+        public ODDataService(string keyPath, string certPath, string certPassword, string apiUrl)
         {
             _keyPath = keyPath;
             _cert = new X509Certificate2(certPath, certPassword);
             _apiUrl = apiUrl;
         }
 
-        private string _apiUrl = "https://46.28.89.45:2443/api/v2";
+        private readonly string _apiUrl;
 
         private readonly string _keyPath;
         private readonly X509Certificate2 _cert;

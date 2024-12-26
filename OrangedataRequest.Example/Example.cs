@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using OrangedataRequest;
 using OrangedataRequest.DataService;
@@ -11,35 +13,43 @@ namespace TestLauncher
     {
         static async Task Main(string[] args)
         {
-            var prKeyPath = "F:\\tmp\\API\\private_key.xml";
-            var certPath = "F:\\tmp\\API\\client.pfx";
+            // From https://github.com/orangedata-official/API/tree/master/files_for_test
+            var prKeyPath = ".\\private_key_test.xml";
+            var certPath = ".\\client.pfx";
             var certPass = "1234";
 
-            var dummyOrangeRequest = new OrangeRequest(prKeyPath, certPath, certPass);
+            var apiUrl = OrangeRequest.TestEnvironment1ApiUrl;
+            var inn = OrangeRequest.TestEnvironment1Inn;
+            var key = OrangeRequest.TestEnvironment1Key;
 
+            var dummyOrangeRequest = new OrangeRequest(prKeyPath, certPath, certPass, apiUrl);
+
+            var documentId1 = Guid.NewGuid().ToString();
             var dummyCreateCheckRequest = new ReqCreateCheck
             {
-                Id = "66549876216",
-                INN = "5001104058",
+                INN = inn,
+                Key = key,
+                Id = documentId1,
                 Content = new Content
                 {
                     Type = DocTypeEnum.In,
                     AgentType = AgentTypeEnum.PayingAgent,
+                    TotalSum = 123.45m + 2 * 4.45m,
+                    Vat7Sum = Math.Round((2 * 4.45m) * 5m / 105m, 2),
                     CheckClose = new CheckClose
                     {
-                        Payments = new[]
-                        {
+                        Payments =
+                        [
                             new Payment
                             {
-                                Amount = 132.35m,
-                                //Amount = 1.35m,
+                                Amount = 123.45m + 4.45m * 2,
                                 Type = PaymentTypeEnum.Cash
                             }
-                        },
+                        ],
                         TaxationSystem = TaxationSystemEnum.Simplified
                     },
-                    Positions = new []
-                    {
+                    Positions =
+                    [
                         new Position
                         {
                             Price = 123.45m,
@@ -53,20 +63,22 @@ namespace TestLauncher
                         {
                             Price = 4.45m,
                             Quantity = 2m,
-                            Tax = VATRateEnum.VAT110,
+                            Tax = VATRateEnum.VAT5,
                             Text = "Спички",
                             PaymentMethodType = PaymentMethodTypeEnum.Full,
                             PaymentSubjectType = PaymentSubjectTypeEnum.Product
                         }
-                    },
+                    ],
                     CustomerContact = "foo@example.com"
                 }
             };
 
+            var documentId2 = Guid.NewGuid().ToString();
             var dummyCreateCorrectionCheckRequest = new ReqCreateCorrectionCheck
             {
-                Id = "66549876216",
-                INN = "5001104058",
+                INN = inn,
+                Key = key,
+                Id = documentId2,
                 Content = new CorrectionContent
                 {
                     Type = DocTypeEnum.In,
@@ -77,10 +89,51 @@ namespace TestLauncher
                     CauseDocumentNumber = "21"
                 }
             };
-            var res1 = await dummyOrangeRequest.CreateCheckAsync(dummyCreateCheckRequest);
-            var res2 = await dummyOrangeRequest.GetCheckStateAsync("5001104058", "12345678990");
-            var res3 = await dummyOrangeRequest.CreateCorrectionCheckAsync(dummyCreateCorrectionCheckRequest);
-            var res4 = await dummyOrangeRequest.GetCorrectionCheckStateAsync("5001104058", "12345678990");
+            try
+            {
+                var res1 = await dummyOrangeRequest.CreateCheckAsync(dummyCreateCheckRequest);
+                if (res1.StatusCode != HttpStatusCode.Created)
+                {
+                    var e = (RespCreateCheck)res1.ResponseObject;
+                    throw new Exception($"{nameof(dummyOrangeRequest.CreateCheckAsync)} failed with code {res1.StatusCode}: {string.Join(";", e.Errors)}");
+                }
+
+                ODResponse res2;
+                while (true)
+                {
+                    res2 = await dummyOrangeRequest.GetCheckStateAsync(inn, documentId1);
+                    if (res2.StatusCode != HttpStatusCode.Accepted)
+                        break;
+                    Console.WriteLine("Pending...");
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
+                if (res2.StatusCode != HttpStatusCode.OK) 
+                    throw new Exception($"{nameof(dummyOrangeRequest.GetCheckStateAsync)} failed with code {res2.StatusCode}: {res2.Response}");
+                var r = (RespCheckStatus)res2.ResponseObject;
+                Console.WriteLine($"FP: {r.FP}, FS: {r.FSNumber}, FD: {r.DocumentNumber}\n{res2.Response}");
+                
+                var res3 = await dummyOrangeRequest.CreateCorrectionCheckAsync(dummyCreateCorrectionCheckRequest);
+                if (res3.StatusCode != HttpStatusCode.Created) 
+                    throw new Exception($"{nameof(dummyOrangeRequest.CreateCorrectionCheckAsync)} failed with code {res3.StatusCode}: {res3.Response}");
+                
+                ODResponse res4;
+                while (true)
+                {
+                    res4 = await dummyOrangeRequest.GetCorrectionCheckStateAsync(inn, documentId2);
+                    if (res4.StatusCode != HttpStatusCode.Accepted)
+                        break;
+                    Console.WriteLine("Pending...");
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
+                if (res4.StatusCode != HttpStatusCode.OK) 
+                    throw new Exception($"{nameof(dummyOrangeRequest.GetCorrectionCheckStateAsync)} failed with code {res4.StatusCode}: {res4.Response}");
+                var r2 = (RespCorrectionCheckStatus)res4.ResponseObject;
+                Console.WriteLine($"FP: {r2.FP}, FS: {r2.FSNumber}, FD: {r2.DocumentNumber}\n{res4.Response}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             Console.ReadKey();
         }
     }

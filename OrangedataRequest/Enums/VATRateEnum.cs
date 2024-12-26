@@ -6,17 +6,17 @@
     public enum VATRateEnum
     {
         /// <summary>
-        ///     ставка НДС 18%
+        ///     ставка НДС 20%
         /// </summary>
-        VAT18 = 1,
+        VAT20 = 1,
         /// <summary>
         ///     ставка НДС 10%
         /// </summary>
         VAT10,
         /// <summary>
-        ///     ставка НДС расч. 18/118
+        ///     ставка НДС расч. 20/120
         /// </summary>
-        VAT118,
+        VAT120,
         /// <summary>
         ///     ставка НДС расч. 10/110
         /// </summary>
@@ -28,6 +28,22 @@
         /// <summary>
         ///     НДС не облагается
         /// </summary>
-        NONE
+        NONE,
+        /// <summary>
+        ///     ставка НДС 5%
+        /// </summary>
+        VAT5,
+        /// <summary>
+        ///     ставка НДС 7%
+        /// </summary>
+        VAT7,
+        /// <summary>
+        ///     ставка НДС расч. 5/105
+        /// </summary>
+        VAT105,
+        /// <summary>
+        ///     ставка НДС расч. 7/107
+        /// </summary>
+        VAT107,
     }
 }

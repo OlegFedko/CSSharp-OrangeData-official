@@ -160,5 +160,25 @@ namespace OrangedataRequest.Models
         /// Сумма НДС чека по расч. ставке 10/110, 1107
         /// </summary>
         public decimal Vat6Sum { get; set; }
+
+        /// <summary>
+        /// Сумма НДС чека по ставке 5%
+        /// </summary>
+        public decimal Vat7Sum { get; set; }
+
+        /// <summary>
+        /// Сумма НДС чека по ставке 7%
+        /// </summary>
+        public decimal Vat8Sum { get; set; }
+
+        /// <summary>
+        /// Сумма НДС чека по ставке расч. 5/105
+        /// </summary>
+        public decimal Vat9Sum { get; set; }
+
+        /// <summary>
+        /// Сумма НДС чека по ставке расч. 7/107
+        /// </summary>
+        public decimal Vat10Sum { get; set; }
     }
 }
