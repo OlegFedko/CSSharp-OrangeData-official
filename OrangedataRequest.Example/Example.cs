@@ -13,7 +13,27 @@ namespace TestLauncher
     {
         static async Task Main(string[] args)
         {
-            // From https://github.com/orangedata-official/API/tree/master/files_for_test
+            /* Для тестовых целей скачать private_key_test.xml и client.pfx из
+               https://github.com/orangedata-official/API/tree/master/files_for_test
+
+               Для боевого использования:
+
+               Перейти в https://lk.orangedata.ru/lk/integrations/direct
+               
+               Выбрать "Прямое подключение"
+               
+               Нажать "скачать программу", скачается Nebula.KeysGenerator.exe
+               
+               Запустить Nebula.KeysGenerator.exe, нажать "Сгенерировать RSA-ключи"
+               Появится "rsa_2048_private_key.xml" и "rsa_2048_public_key.xml"
+               
+               В разделе "Введите публичную часть ключа" выбрать файл "rsa_2048_public_key.xml", нажать "Сохранить".
+               
+               В разделе "Получите сертификат" нажать "Скачать сертификат", скачается файл "<ВАШ ИНН>.zip".
+               Внутри него нужен "<ВАШ ИНН>.pfx" и пароль из "readme_v2.txt" (всегда "1234")
+               
+               Нужны "rsa_2048_private_key.xml", "<ВАШ ИНН>.pfx", пароль из "readme_v2.txt"
+            */
             var prKeyPath = ".\\private_key_test.xml";
             var certPath = ".\\client.pfx";
             var certPass = "1234";
@@ -94,6 +114,8 @@ namespace TestLauncher
                 var res1 = await dummyOrangeRequest.CreateCheckAsync(dummyCreateCheckRequest);
                 if (res1.StatusCode != HttpStatusCode.Created)
                 {
+                    if (res1.ResponseObject is Exception exception)
+                        throw new ApplicationException("CreateCheckAsync failed", exception);
                     var e = (RespCreateCheck)res1.ResponseObject;
                     throw new Exception($"{nameof(dummyOrangeRequest.CreateCheckAsync)} failed with code {res1.StatusCode}: {string.Join(";", e.Errors)}");
                 }

@@ -14,6 +14,11 @@ namespace OrangedataRequest.DataService
 
         /// <summary>
         ///     Десериализованный ответ
+        /// Types:
+        ///   RespCheckStatus
+        ///   RespCorrectionCheckStatus
+        ///   RespCreateCheck
+        ///   Exception
         /// </summary>
         public object ResponseObject { get; set; }
 
